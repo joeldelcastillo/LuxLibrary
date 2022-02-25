@@ -24,40 +24,19 @@ void setup() {
     helper.increment();
     //Colocar un listener por cada dirección de cada baliarin (cliente)
     server.on(direcciones[i], HTTP_GET, [](AsyncWebServerRequest *request){
-      
+      float value;
       int artista = helper.getCount();
       //Añadir otro parametro por cada valor a recoger (yaw, pitch ...)
-      if (request->hasParam("yaw")){
-        float value;
+      if (request->hasParam("count")){
         //recoge cada valor de un parámetro
-          String message = request->getParam("yaw")->value();
+          String message = request->getParam("count")->value();
           value = message.toFloat();
           //guardar los datos en la clase MainServer
           accessPoint.setArtista(value, artista, 0);
-          Serial.printf("yaw: %d,/n", value);
-         
-      } 
-      if (request->hasParam("pitch")){
-        float value;
-        //recoge cada valor de un parámetro
-          String message = request->getParam("pitch")->value();
-          value = message.toFloat();
-          //guardar los datos en la clase MainServer
-          accessPoint.setArtista(value, artista, 1);
-          Serial.printf("pitch: %d,/n",value);
-          
-      }
-      if (request->hasParam("roll")){
-        float value;
-        //recoge cada valor de un parámetro
-          String message = request->getParam("roll")->value();
-          value = message.toFloat();
-          //guardar los datos en la clase MainServer
-          accessPoint.setArtista(value, artista, 2);
-          Serial.printf("pitch: %d,/n",value);
-      }
-      else {
-       
+          Serial.println(value);
+      } else {
+        //Valor de error
+        value = 999;
       }
       request->send_P(200, "text/plain", "Bien");
     });
@@ -74,6 +53,5 @@ void loop() {
   //light.simpleColor(160);
   //Serial.println("hola");
   //light.rainbow(counter);
-  light.ChangePaletteGyro(accessPoint.getArtista(0));
   //delay(1);
 }
