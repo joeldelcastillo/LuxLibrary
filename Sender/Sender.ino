@@ -16,7 +16,7 @@ HTTPClient http;
 float value = 0;
 
 void setup() {
-  pinMode(LED_BUILTIN,OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 
   Serial.begin(115200);
 
@@ -39,8 +39,8 @@ void setup() {
   Serial.println("");
   Serial.print("Connected to WiFi network with IP Address: ");
   Serial.println(WiFi.localIP());
-  digitalWrite(LED_BUILTIN,HIGH);
-  
+  digitalWrite(LED_BUILTIN, HIGH);
+
   Serial.println("Timer set to 5 seconds (timerDelay variable), it will take 5 seconds before publishing the first reading.");
 
 }
@@ -53,7 +53,7 @@ void loop() {
   if (currentMillis - previousMillis >= interval) {
     if (WiFi.status() == WL_CONNECTED) {
       //POST request
-      String serverPath = httpPOSTRequest(serverNameCounter, "count", mpu.getYaw());
+      String serverPath = httpPOSTRequest(serverNameCounter, "pitch", mpu.getPitch(), "roll", mpu.getRoll(), "yaw", mpu.getYaw());
 
       http.begin(serverPath.c_str());
       // Send HTTP GET request
@@ -73,7 +73,7 @@ void loop() {
     }
     else {
       Serial.println("WiFi Disconnected");
-      digitalWrite(LED_BUILTIN,LOW);
+      digitalWrite(LED_BUILTIN, LOW);
     }
     previousMillis = currentMillis;
   }
@@ -82,8 +82,8 @@ void loop() {
 
 
 //Crea un sring para enviar por parámetros cada valor
-String httpPOSTRequest(String serverName, String param, float value) {
-  String serverPath = serverName + "?" + param + "=" + String(value, 3);
-  Serial.println(param + "=" + String(value, 3));
+String httpPOSTRequest(String serverName, String param1, float value1, String param2, float value2, String param3, float value3) {
+  String serverPath = serverName + "?" + param1 + "=" + String(value1, 3) + "?" + param2 + "=" + String(value2, 3) + "?" + param3 + "=" + String(value3, 3);
+  Serial.println(param1 + "=" + String(value1, 3) + param2 + "=" + String(value2, 3) + param3 + "=" + String(value3, 3) );
   return serverPath;
 }
