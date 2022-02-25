@@ -42,6 +42,10 @@ class MainServer {
     void setArtista(float value, int artista, int angle){
       artistas[artista][angle] = value;
     }
+
+    float *getArtista(int artista){
+      return artistas[artista];
+    }
   
 
 };

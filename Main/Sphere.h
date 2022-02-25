@@ -113,6 +113,37 @@ class Sphere {
         FastLED.show();
     }
 
+    void ChangePaletteGyro(float vector[]){
+      float pitch = vector[0];
+      float roll = vector[1];
+      float yaw = vector[2];
+
+      if (pitch > 50 && roll < 45 && yaw > 45) {
+        simpleColor(0);
+      }
+      if (pitch < 50 && roll < 45 && yaw > 45) {
+        simpleColor(30);
+      }
+      if (pitch > 50 && roll < 45 && yaw > 45) {
+        simpleColor(60);
+      }
+      if (pitch > 50 && roll < 45 && yaw < 45) {
+        simpleColor(90);
+      }
+      if (pitch < 50 && roll > 45 && yaw > 45) {
+        simpleColor(120);
+      }
+      if (pitch < 50 && roll < 45 && yaw < 45) {
+        simpleColor(180);
+      }
+      if (pitch > 50 && roll > 45 && yaw < 45) {
+        simpleColor(210);
+      }
+      if (pitch < 50 && roll > 45 && yaw < 45) {
+        simpleColor(240);
+      }
+    }
+
      
   /*  void ChangePaletteGyro(float pitch, float roll, float yaw)
     {
