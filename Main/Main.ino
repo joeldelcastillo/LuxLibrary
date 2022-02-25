@@ -27,12 +27,12 @@ void setup() {
       
       int artista = helper.getCount();
       //Añadir otro parametro por cada valor a recoger (yaw, pitch ...)
-      if (request->hasParam("yaw")){
+      if (request->hasParam("counter")){
         float yaw = 0;
         float pitch = 0;
         float roll = 0;
         //recoge cada valor de un parámetro
-        String yawS = request->getParam("yaw")->value();
+        String yawS = request->getParam("counter")->value();
         //String pitchS = request->getParam("pitch")->value();
         //String rollS = request->getParam("roll")->value();
 
@@ -71,6 +71,6 @@ void loop() {
   //light.simpleColor(160);
   //Serial.println("hola");
   //light.rainbow(counter);
-  light.ChangePaletteGyro(accessPoint.getArtista(0));
+  light.simpleChangePaletteGyro(accessPoint.getArtista(0)[0]);
   //delay(1);
 }

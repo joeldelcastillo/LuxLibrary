@@ -114,6 +114,9 @@ class Sphere {
         FastLED.show();
     }
 
+    void simpleChangePaletteGyro(float yaw){
+      simpleColor(yaw);
+    }
     void ChangePaletteGyro(float vector[]){
       float pitch = vector[0];
       float roll = vector[1];
