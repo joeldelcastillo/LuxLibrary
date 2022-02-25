@@ -20,20 +20,20 @@ void setup() {
   accessPoint.setAccess();
   light.setPins();
 
-  for(int i = 0; i < 2; i++){
+  for (int i = 0; i < 2; i++) {
     helper.increment();
     //Colocar un listener por cada dirección de cada baliarin (cliente)
-    server.on(direcciones[i], HTTP_GET, [](AsyncWebServerRequest *request){
+    server.on(direcciones[i], HTTP_GET, [](AsyncWebServerRequest * request) {
       float value;
       int artista = helper.getCount();
       //Añadir otro parametro por cada valor a recoger (yaw, pitch ...)
-      if (request->hasParam("count")){
+      if (request->hasParam("count")) {
         //recoge cada valor de un parámetro
-          String message = request->getParam("count")->value();
-          value = message.toFloat();
-          //guardar los datos en la clase MainServer
-          accessPoint.setArtista(value, artista, 0);
-          Serial.println(value);
+        String message = request->getParam("count")->value();
+        value = message.toFloat();
+        //guardar los datos en la clase MainServer
+        accessPoint.setArtista(value, artista, 0);
+        Serial.println(value);
       } else {
         //Valor de error
         value = 999;
@@ -41,7 +41,7 @@ void setup() {
       request->send_P(200, "text/plain", "Bien");
     });
   }
-  
+
   // Start server
   server.begin();
 }
@@ -49,7 +49,7 @@ void setup() {
 void loop() {
   //Animaciones
 
-  
+
   //light.simpleColor(160);
   //Serial.println("hola");
   //light.rainbow(counter);
