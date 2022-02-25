@@ -28,34 +28,31 @@ void setup() {
       int artista = helper.getCount();
       //Añadir otro parametro por cada valor a recoger (yaw, pitch ...)
       if (request->hasParam("yaw")){
-        float value;
+        float yaw = 0;
+        float pitch = 0;
+        float roll = 0;
         //recoge cada valor de un parámetro
-          String message = request->getParam("yaw")->value();
-          value = message.toFloat();
-          //guardar los datos en la clase MainServer
-          accessPoint.setArtista(value, artista, 0);
-          Serial.printf("yaw: %d,/n", value);
+        String yawS = request->getParam("yaw")->value();
+        //String pitchS = request->getParam("pitch")->value();
+        //String rollS = request->getParam("roll")->value();
+
+        yaw = yawS.toFloat();
+        //pitch = pitchS.toFloat();
+        //roll = rollS.toFloat();
+
+        //guardar los datos en la clase MainServer
+        accessPoint.setArtista(yaw, artista, 0);
+        //accessPoint.setArtista(pitch, artista, 1);
+        //accessPoint.setArtista(roll, artista, 2);
+        //Serial.printf("yaw: %d,pitch: %d,roll: %d/n", raw, pitch, roll);
+        Serial.print("yaw: ");
+        Serial.print(yaw);
+         Serial.print(",");
+        Serial.print("pitch: ");
+        Serial.print(pitch);
+        Serial.println();
          
       } 
-      if (request->hasParam("pitch")){
-        float value;
-        //recoge cada valor de un parámetro
-          String message = request->getParam("pitch")->value();
-          value = message.toFloat();
-          //guardar los datos en la clase MainServer
-          accessPoint.setArtista(value, artista, 1);
-          Serial.printf("pitch: %d,/n",value);
-          
-      }
-      if (request->hasParam("roll")){
-        float value;
-        //recoge cada valor de un parámetro
-          String message = request->getParam("roll")->value();
-          value = message.toFloat();
-          //guardar los datos en la clase MainServer
-          accessPoint.setArtista(value, artista, 2);
-          Serial.printf("pitch: %d,/n",value);
-      }
       else {
        
       }

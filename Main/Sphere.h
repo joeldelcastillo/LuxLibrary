@@ -49,8 +49,9 @@ class Sphere {
     // Power on the LED
     void setPins(){
       
-      currentPalette = RainbowColors_p;
-      currentBlending = LINEARBLEND;
+      //currentPalette = RainbowColors_p;
+      //currentBlending = LINEARBLEND;
+      
 
       FastLED.addLeds<WS2812B, 2, GRB>(leds[0], NUM_PER_STRIP[0]);
       FastLED.addLeds<WS2812B, 4, GRB>(leds[1], NUM_PER_STRIP[1]); 
@@ -59,7 +60,7 @@ class Sphere {
       FastLED.addLeds<WS2812B, 19, GRB>(leds[4], NUM_PER_STRIP[4]); 
       FastLED.addLeds<WS2812B, 21, GRB>(leds[5], NUM_PER_STRIP[5]);
       FastLED.addLeds<WS2812B, 22, GRB>(leds[6], NUM_PER_STRIP[6]);
-      FastLED.addLeds<WS2812B, 23, GRB>(leds[7], NUM_PER_STRIP[7]);
+      FastLED.addLeds<WS2812B, 23, GRB>(leds[7], NUM_PER_STRIP[7]).setCorrection( TypicalLEDStrip );;
 
       
       FastLED.addLeds<WS2812B, 12, GRB>(leds[8], NUM_PER_STRIP[8]);
