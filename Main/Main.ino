@@ -16,7 +16,7 @@ const char *direcciones[3] = {dir0, dir1, dir2};
 
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   accessPoint.setAccess();
   light.setPins();
 

@@ -19,8 +19,8 @@ class Sphere {
     int BRIGHTNESS = 50;
     CRGBPalette16 currentPalette;
     TBlendType    currentBlending;
-    extern CRGBPalette16 myRedWhiteBluePalette;
-    extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
+    //extern CRGBPalette16 myRedWhiteBluePalette;
+    //extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
     CRGB leds[19][300];
 
   public:
@@ -114,7 +114,7 @@ class Sphere {
     }
 
      
-    void ChangePaletteGyro(float pitch, float roll, float yaw)
+  /*  void ChangePaletteGyro(float pitch, float roll, float yaw)
     {
       if (pitch > 50 && roll < 45 && yaw > 45) {
         currentPalette = RainbowColors_p;
@@ -231,7 +231,7 @@ class Sphere {
     };
 
 
-
+*/
 };
 
 #endif
