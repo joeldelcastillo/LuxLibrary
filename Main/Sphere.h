@@ -17,11 +17,12 @@ class Sphere {
     int Total_LEDS;
     int NUM_STRIPS = 19;
     int BRIGHTNESS = 50;
-
-//    LinkedList<LinkedList<CRGB>> leds;
-//    vector<vector<CRGB>> leds;
+    CRGBPalette16 currentPalette;
+    TBlendType    currentBlending;
+    extern CRGBPalette16 myRedWhiteBluePalette;
+    extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
     CRGB leds[19][300];
-//    
+
   public:
 
 
@@ -48,6 +49,9 @@ class Sphere {
     // Power on the LED
     void setPins(){
       
+      currentPalette = RainbowColors_p;
+      currentBlending = LINEARBLEND;
+
       FastLED.addLeds<WS2812B, 2, GRB>(leds[0], NUM_PER_STRIP[0]);
       FastLED.addLeds<WS2812B, 4, GRB>(leds[1], NUM_PER_STRIP[1]); 
       FastLED.addLeds<WS2812B, 5, GRB>(leds[2], NUM_PER_STRIP[2]); 
@@ -83,8 +87,7 @@ class Sphere {
     }
 
     void simpleColor(int hue){
-      
-      
+  
       for (int i = 0; i < NUM_STRIPS; i++)
       {
         for (int j = 0; j < NUM_PER_STRIP[i]; j++)
@@ -96,19 +99,137 @@ class Sphere {
        
     }
 
-      void rainbow(int increment){
-        FastLED.clear();
-        int offset = increment % 255;
-        for (int i = 0; i < NUM_STRIPS; i++)
+    void rainbow(int increment){
+      FastLED.clear();
+      int offset = increment % 255;
+      for (int i = 0; i < NUM_STRIPS; i++)
+      {
+        int hue = map(i, 0, NUM_STRIPS, 0, 255);
+        for (int j = 0; j < NUM_PER_STRIP[i]; j++)
         {
-          int hue = map(i, 0, NUM_STRIPS, 0, 255);
+          leds[i][j] = CHSV((hue + offset)%255, 255, 255);
+          }
+        }
+        FastLED.show();
+    }
+
+     
+    void ChangePaletteGyro(float pitch, float roll, float yaw)
+    {
+      if (pitch > 50 && roll < 45 && yaw > 45) {
+        currentPalette = RainbowColors_p;
+        currentBlending = LINEARBLEND;
+      }
+      if (pitch < 50 && roll < 45 && yaw > 45) {
+        SetupPurpleAndGreenPalette();
+        currentBlending = LINEARBLEND;
+      }
+      if (pitch > 50 && roll < 45 && yaw > 45) {
+        SetupTotallyRandomPalette();
+        currentBlending = LINEARBLEND;
+      }
+      if (pitch > 50 && roll < 45 && yaw < 45) {
+        currentPalette = PartyColors_p;
+        currentBlending = LINEARBLEND;
+      }
+      if (pitch < 50 && roll > 45 && yaw > 45) {
+        currentPalette = myRedWhiteBluePalette_p;
+        currentBlending = LINEARBLEND;
+      }
+      if (pitch < 50 && roll < 45 && yaw < 45) {
+        currentPalette = RainbowStripeColors_p;
+        currentBlending = NOBLEND;
+      }
+      if (pitch > 50 && roll > 45 && yaw < 45) {
+        currentPalette = CloudColors_p;
+        currentBlending = LINEARBLEND;
+      }
+      if (pitch < 50 && roll > 45 && yaw < 45) {
+        SetupTotallyRandomPalette();
+        currentBlending = LINEARBLEND;
+      }
+    
+    
+    }
+
+    void FillLEDsFromPaletteColors( uint8_t colorIndex)
+    {
+
+      for (int i = 0; i < NUM_STRIPS; i++)
+        {
           for (int j = 0; j < NUM_PER_STRIP[i]; j++)
           {
-            leds[i][j] = CHSV((hue + offset)%255, 255, 255);
-            }
-         }
-         FastLED.show();
+            leds[i][j] = ColorFromPalette( currentPalette, colorIndex, BRIGHTNESS, currentBlending);
+            colorIndex += 3;
+          }
+       }
+    }
+    
+        // This function fills the palette with totally random colors.
+    void SetupTotallyRandomPalette()
+    {
+      for ( int i = 0; i < 16; ++i) {
+        currentPalette[i] = CHSV( random8(), 255, random8());
       }
+    }
+    
+    // This function sets up a palette of black and white stripes,
+    // using code.  Since the palette is effectively an array of
+    // sixteen CRGB colors, the various fill_* functions can be used
+    // to set them up.
+    void SetupBlackAndWhiteStripedPalette()
+    {
+      // 'black out' all 16 palette entries...
+      fill_solid( currentPalette, 16, CRGB::Black);
+      // and set every fourth one to white.
+      currentPalette[0] = CRGB::White;
+      currentPalette[4] = CRGB::White;
+      currentPalette[8] = CRGB::White;
+      currentPalette[12] = CRGB::White;
+    
+    }
+    
+    // This function sets up a palette of purple and green stripes.
+    void SetupPurpleAndGreenPalette()
+    {
+      CRGB purple = CHSV( HUE_PURPLE, 255, 255);
+      CRGB green  = CHSV( HUE_GREEN, 255, 255);
+      CRGB black  = CRGB::Black;
+    
+      currentPalette = CRGBPalette16(
+                         green,  green,  black,  black,
+                         purple, purple, black,  black,
+                         green,  green,  black,  black,
+                         purple, purple, black,  black );
+    }
+    
+    
+    // This example shows how to set up a static color palette
+    // which is stored in PROGMEM (flash), which is almost always more
+    // plentiful than RAM.  A static PROGMEM palette like this
+    // takes up 64 bytes of flash.
+    const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
+    {
+      CRGB::Red,
+      CRGB::Gray, // 'white' is too bright compared to red and blue
+      CRGB::Blue,
+      CRGB::Black,
+    
+      CRGB::Red,
+      CRGB::Gray,
+      CRGB::Blue,
+      CRGB::Black,
+    
+      CRGB::Red,
+      CRGB::Red,
+      CRGB::Gray,
+      CRGB::Gray,
+      CRGB::Blue,
+      CRGB::Blue,
+      CRGB::Black,
+      CRGB::Black
+    };
+
 
 
 };

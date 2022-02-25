@@ -10,7 +10,6 @@ class Counter {
     int count = 0;
     
   public:
-    // Setup pin LED and call init()
 
     void increment(){
       count++;
