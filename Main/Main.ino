@@ -67,8 +67,9 @@ void loop() {
   //light.simpleColor(160);
   //Serial.println(counter);
  
-  //light.rainbow(counter);
-  //counter += 1;
+  light.rainbow(counter);
+  
+  counter = artistas[0];
   printArtista();
   //accessPoint.setArtista(counter, 0, 0);
   //Serial.println(accessPoint.getArtista(0, 0));
