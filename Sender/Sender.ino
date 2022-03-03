@@ -11,7 +11,7 @@ const char* password = "123456789";
 String serverNameCounter = "http://192.168.4.1/b0";
 
 unsigned long previousMillis = 0;
-const long interval = 500;
+const long interval = 250;
 HTTPClient http;
 float value = 0;
 
