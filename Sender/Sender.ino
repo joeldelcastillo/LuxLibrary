@@ -11,12 +11,12 @@ const char* password = "123456789";
 String serverNameCounter = "http://192.168.4.1/b0";
 
 unsigned long previousMillis = 0;
-const long interval = 250;
+const long interval = 125;
 HTTPClient http;
 float value = 0;
 
 void setup() {
-  pinMode(LED_BUILTIN,OUTPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
 
   Serial.begin(115200);
 
@@ -39,8 +39,8 @@ void setup() {
   Serial.println("");
   Serial.print("Connected to WiFi network with IP Address: ");
   Serial.println(WiFi.localIP());
-  digitalWrite(LED_BUILTIN,HIGH);
-  
+  digitalWrite(LED_BUILTIN, HIGH);
+
   Serial.println("Timer set to 5 seconds (timerDelay variable), it will take 5 seconds before publishing the first reading.");
 
 }
@@ -73,7 +73,7 @@ void loop() {
     }
     else {
       Serial.println("WiFi Disconnected");
-      digitalWrite(LED_BUILTIN,LOW);
+      digitalWrite(LED_BUILTIN, LOW);
     }
     previousMillis = currentMillis;
   }
