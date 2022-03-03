@@ -27,10 +27,17 @@ void setup() {
       float value;
       int artista = helper.getCount();
       //Añadir otro parametro por cada valor a recoger (yaw, pitch ...)
-      if (request->hasParam("count")) {
+      if (request->hasParam("yaw")) {
         //recoge cada valor de un parámetro
-        String message = request->getParam("count")->value();
-        value = message.toFloat();
+        String yawS = request->getParam("yaw")->value();;
+        String pitchS = request->getParam("pitch")->value();
+        String rollS = request->getParam("roll")->value();
+
+        float yaw = yawS.toFloat();
+        float pitch = pitchS.toFloat();
+        //float roll = rollS.toFloat();
+        float roll = 0;
+        print_roll_pitch_yaw(yaw, pitch, roll);
         //guardar los datos en la clase MainServer
         accessPoint.setArtista(value, artista, 0);
         Serial.println(value);
@@ -53,6 +60,15 @@ void loop() {
   //light.simpleColor(160);
   //Serial.println("hola");
   //light.rainbow(counter);
-  light.simpleChangePaletteGyro(accessPoint.getArtista(0)[0]);
+  //light.simpleChangePaletteGyro(accessPoint.getArtista(0)[0]);
   //delay(1);
+}
+
+void print_roll_pitch_yaw(float yaw, float pitch, float roll) {
+  Serial.print("Yaw, Pitch, Roll: ");
+  Serial.print(yaw, 2);
+  Serial.print(", ");
+  Serial.print(pitch, 2);
+  Serial.print(", ");
+  Serial.println(roll, 2);
 }

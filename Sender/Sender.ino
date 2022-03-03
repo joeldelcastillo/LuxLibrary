@@ -53,7 +53,7 @@ void loop() {
   if (currentMillis - previousMillis >= interval) {
     if (WiFi.status() == WL_CONNECTED) {
       //POST request
-      String serverPath = httpPOSTRequest(serverNameCounter, "count", mpu.getYaw());
+      String serverPath = httpPOSTRequest(serverNameCounter, mpu.getYaw(), mpu.getPitch(), mpu.getRoll());
 
       http.begin(serverPath.c_str());
       // Send HTTP GET request
@@ -80,10 +80,9 @@ void loop() {
 
 }
 
-
 //Crea un sring para enviar por parámetros cada valor
-String httpPOSTRequest(String serverName, String param, float value) {
-  String serverPath = serverName + "?" + param + "=" + String(value, 3);
-  Serial.println(param + "=" + String(value, 3));
+String httpPOSTRequest(String serverName, float value1, float value2, float value3) {
+  String serverPath = serverName + "?yaw=" + String(value1, 2) + "&pitch=" + String(value2, 2) + "&roll=" + String(value3, 3);
+  Serial.println(serverPath);
   return serverPath;
 }
