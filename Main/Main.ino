@@ -6,7 +6,7 @@
 Sphere light;
 Counter helper;
 MainServer accessPoint("accessPoint");
-int counter = 0;
+float counter = 0;
 AsyncWebServer server(80);
 float artistas[3] = {0.0, 0.0, 0.0};
 
@@ -19,9 +19,10 @@ const char *direcciones[3] = {dir0, dir1, dir2};
 
 void setup() {
   Serial.begin(115200);
-  accessPoint.setAccess();
-  light.setPins();
 
+  light.setPins();
+  
+  accessPoint.setAccess();
   for (int i = 0; i < 2; i++) {
     helper.increment();
     //Colocar un listener por cada dirección de cada baliarin (cliente)
@@ -59,6 +60,9 @@ void setup() {
 
   // Start server
   server.begin();
+  
+
+
 }
 
 void loop() {
@@ -67,10 +71,20 @@ void loop() {
   //light.simpleColor(160);
   //Serial.println(counter);
  
-  light.rainbow(counter);
-  
-  counter = artistas[0];
-  printArtista();
+  //light.rainbow(counter);
+  //counter ++;
+
+  counter = light.modulo(artistas[0], artistas[1], artistas[2]);
+  float percentage = mapF(counter, 0, 2, 0, 100);
+  //Serial.println();
+  //light.movible(percentage, 100);
+    
+  //Serial.println(percentage);
+  //light.simpleColor(counter);
+  light.intensity(100, percentage);
+  //light.ChangePaletteGyro(artistas);
+
+    //printArtista();
   //accessPoint.setArtista(counter, 0, 0);
   //Serial.println(accessPoint.getArtista(0, 0));
   //light.simpleChangePaletteGyro(accessPoint.getArtista(0)[0]);
@@ -94,4 +108,9 @@ void printArtista(){
       Serial.print(artistas[j]);
     }
     Serial.println();
+}
+
+float mapF(float value, float start1, float stop1, float start2, float stop2){
+  float outgoing = start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)); 
+ return outgoing;
 }

@@ -88,7 +88,7 @@ class Sphere {
     }
 
     void simpleColor(int hue){
-  
+      FastLED.clear();
       for (int i = 0; i < NUM_STRIPS; i++)
       {
         for (int j = 0; j < NUM_PER_STRIP[i]; j++)
@@ -97,7 +97,19 @@ class Sphere {
           
           }
        }
-       
+        FastLED.show();
+    }
+
+    void intensity(int hue, int intensity){
+      FastLED.clear();
+      for (int i = 0; i < NUM_STRIPS; i++)
+      {
+        for (int j = 0; j < NUM_PER_STRIP[i]; j++)
+        {
+          leds[i][j] = CHSV(hue, 255, 255 * (intensity/100));
+          }
+       }
+        FastLED.show();
     }
 
     void rainbow(int increment){
@@ -114,13 +126,47 @@ class Sphere {
         FastLED.show();
     }
 
+    void porcentaje(float percentage, int color){
+
+     FastLED.clear();
+      for (int i = 0; i < NUM_STRIPS; i++)
+      {
+        for (int j = 0; j < 10; j++)
+        {
+            if(j < percentage * 10){
+                leds[i][j] = CHSV(color, 255, 255);
+            }
+          }
+       }
+        FastLED.show();
+      }
+
+    void movible(float percentage, int color){
+
+     FastLED.clear();
+      for (int i = 0; i < NUM_STRIPS; i++)
+      {
+        for (int j = 0; j < 20; j++)
+        {
+            if(floor((percentage/100) * 20) < j){
+                leds[i][j] = CHSV(color, 255, 255);
+            }
+          }
+       }
+        FastLED.show();
+      }
+
+    float modulo(float x, float y, float z){
+      return sqrt(x*x + y*y + z*z);
+     }
+     
     void simpleChangePaletteGyro(float yaw){
       simpleColor(yaw);
     }
     void ChangePaletteGyro(float vector[]){
-      float pitch = vector[0];
-      float roll = vector[1];
-      float yaw = vector[2];
+      float yaw = vector[0];
+      float pitch  = vector[1];
+      float roll = vector[2];
 
       if (pitch > 50 && roll < 45 && yaw > 45) {
         simpleColor(0);
@@ -148,8 +194,21 @@ class Sphere {
       }
     }
 
+  /* 
+    void hitLed(int strip, int center){
+      int sizeS = NUM_PER_STRIP[strip]
+      for (int j = 0; j < sizeS ; j++)
+      {
+        int distance =  j - center + 1;
+        int ec = (abs(sizeS/distance));
+        int color = floor(map(ec, 0, sizeS, 0, 255));
+        leds[strip][j] = CHSV(color, 255, 255);
+        }
+      }
+ 
+
      
-  /*  void ChangePaletteGyro(float pitch, float roll, float yaw)
+ void ChangePaletteGyro(float pitch, float roll, float yaw)
     {
       if (pitch > 50 && roll < 45 && yaw > 45) {
         currentPalette = RainbowColors_p;
