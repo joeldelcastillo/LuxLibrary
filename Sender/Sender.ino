@@ -8,7 +8,7 @@ const char* ssid = "ESP32";
 const char* password = "123456789";
 
 //Your Domain name with URL path or IP address with path
-String serverNameCounter = "http://192.168.4.1/b0";
+String serverNameCounter = "http://192.168.4.1/b1";
 
 unsigned long previousMillis = 0;
 const long interval = 250;

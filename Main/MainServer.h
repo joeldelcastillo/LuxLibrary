@@ -13,11 +13,11 @@ class MainServer {
     const String severName1 = "http://192.168.4.1/counter";
     String serverName = "";
     float artistas[5][3] = {
-                          {0.0, 0.0, 0.0},
-                          {0.0, 0.0, 0.0},
-                          {0.0, 0.0, 0.0},
-                          {0.0, 0.0, 0.0},
-                          {0.0, 0.0, 0.0},
+                              {0.0, 0.0, 0.0},
+                              {0.0, 0.0, 0.0},
+                              {0.0, 4.0, 0.0},
+                              {0.0, 0.0, 0.0},
+                              {0.0, 0.0, 0.0},
                           };
     
     int pin;
@@ -41,6 +41,33 @@ class MainServer {
 
     void setArtista(float value, int artista, int angle){
       artistas[artista][angle] = value;
+    }
+
+    float getArtista(int artista, int angle){
+      return artistas[artista][angle];
+    }
+
+    void printArtista(int artista){
+      Serial.print("Artista: ");
+      Serial.print(artista);
+      for(int j = 0; j < 3; j++){
+          Serial.print("    ");
+          Serial.print(getArtista(artista, j));
+        }
+        Serial.println();
+    }
+
+    float printArtistas(){
+      for(int i = 0; i < 5; i++){
+        Serial.print("Artista: ");
+        Serial.print(i);
+        for(int j = 0; j < 3; j++){
+          Serial.print("    ");
+          Serial.print(getArtista(i, j));
+        }
+        Serial.println();
+      }
+      Serial.println();
     }
   
 
