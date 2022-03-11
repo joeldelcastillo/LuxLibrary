@@ -5,72 +5,80 @@
 #include "WiFi.h"
 #include "ESPAsyncWebServer.h"
 
-class MainServer {
-  
-  private:
-    const char* ssid = "ESP32";
-    const char* password = "123456789";
-    const String severName1 = "http://192.168.4.1/counter";
-    String serverName = "";
-    float artistas[5][3] = {
-                              {0.0, 0.0, 0.0},
-                              {0.0, 0.0, 0.0},
-                              {0.0, 4.0, 0.0},
-                              {0.0, 0.0, 0.0},
-                              {0.0, 0.0, 0.0},
-                          };
-    
-    int pin;
-    
-  public:
-    // Setup pin LED and call init()
-    MainServer(String serverName){
-      this->serverName = serverName;
-    }
+class MainServer
+{
 
-    void setAccess(){
-            // Setting the ESP as an access point
-      Serial.print("Setting AP (Access Point)…");
-      // Remove the password parameter, if you want the AP (Access Point) to be open
-      WiFi.softAP(ssid, password);
-    
-      IPAddress IP = WiFi.softAPIP();
-      Serial.print("AP IP address: ");
-      Serial.println(IP);  
-    }
+private:
+  const char *ssid = "ESP32";
+  const char *password = "123456789";
+  const String severName1 = "http://192.168.4.1/counter";
+  String serverName = "";
+  float artistas[5][3] = {
+      {0.0, 0.0, 0.0},
+      {0.0, 0.0, 0.0},
+      {0.0, 4.0, 0.0},
+      {0.0, 0.0, 0.0},
+      {0.0, 0.0, 0.0},
+  };
 
-    void setArtista(float value, int artista, int angle){
-      artistas[artista][angle] = value;
-    }
+  int pin;
 
-    float getArtista(int artista, int angle){
-      return artistas[artista][angle];
-    }
+public:
+  // Setup pin LED and call init()
+  MainServer(String serverName)
+  {
+    this->serverName = serverName;
+  }
 
-    void printArtista(int artista){
+  void setAccess()
+  {
+    // Setting the ESP as an access point
+    Serial.print("Setting AP (Access Point)…");
+    // Remove the password parameter, if you want the AP (Access Point) to be open
+    WiFi.softAP(ssid, password);
+
+    IPAddress IP = WiFi.softAPIP();
+    Serial.print("AP IP address: ");
+    Serial.println(IP);
+  }
+
+  void setArtista(float value, int artista, int angle)
+  {
+    artistas[artista][angle] = value;
+  }
+
+  float getArtista(int artista, int angle)
+  {
+    return artistas[artista][angle];
+  }
+
+  void printArtista(int artista)
+  {
+    Serial.print("Artista: ");
+    Serial.print(artista);
+    for (int j = 0; j < 3; j++)
+    {
+      Serial.print("    ");
+      Serial.print(getArtista(artista, j));
+    }
+    Serial.println();
+  }
+
+  float printArtistas()
+  {
+    for (int i = 0; i < 5; i++)
+    {
       Serial.print("Artista: ");
-      Serial.print(artista);
-      for(int j = 0; j < 3; j++){
-          Serial.print("    ");
-          Serial.print(getArtista(artista, j));
-        }
-        Serial.println();
-    }
-
-    float printArtistas(){
-      for(int i = 0; i < 5; i++){
-        Serial.print("Artista: ");
-        Serial.print(i);
-        for(int j = 0; j < 3; j++){
-          Serial.print("    ");
-          Serial.print(getArtista(i, j));
-        }
-        Serial.println();
+      Serial.print(i);
+      for (int j = 0; j < 3; j++)
+      {
+        Serial.print("    ");
+        Serial.print(getArtista(i, j));
       }
       Serial.println();
     }
-  
-
+    Serial.println();
+  }
 };
 
 #endif

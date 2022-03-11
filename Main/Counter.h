@@ -3,23 +3,23 @@
 
 #include <Arduino.h>
 
-//Clase helper para incrementar dentro de un lambda
-class Counter {
-  
-  private:
-    int count = 0;
-    
-  public:
+// Clase helper para incrementar dentro de un lambda
+class Counter
+{
 
-    void increment(){
-      count++;
-    }
+private:
+  int count = 0;
 
-    int getCount(){
-      return count;
-    }
-  
+public:
+  void increment()
+  {
+    count++;
+  }
 
+  int getCount()
+  {
+    return count;
+  }
 };
 
 #endif

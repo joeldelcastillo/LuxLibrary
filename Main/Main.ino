@@ -2,7 +2,7 @@
 #include "Sphere.h"
 #include "Counter.h"
 
-//MainServer test(8);
+// MainServer test(8);
 Sphere light;
 Counter helper;
 MainServer accessPoint("accessPoint");
@@ -10,23 +10,25 @@ float counter = 0;
 AsyncWebServer server(80);
 float artistas[3] = {0.0, 0.0, 0.0};
 
-//Direcciones de cada bailarin
+// Direcciones de cada bailarin
 const char dir0[] = "/b0";
 const char dir1[] = "/b1";
 const char dir2[] = "/b2";
 const char *direcciones[3] = {dir0, dir1, dir2};
 
-
-void setup() {
+void setup()
+{
   Serial.begin(115200);
 
   light.setPins();
-  
+
   accessPoint.setAccess();
-  for (int i = 0; i < 2; i++) {
+  for (int i = 0; i < 2; i++)
+  {
     helper.increment();
-    //Colocar un listener por cada dirección de cada baliarin (cliente)
-    server.on(direcciones[i], HTTP_GET, [](AsyncWebServerRequest * request) {
+    // Colocar un listener por cada dirección de cada baliarin (cliente)
+    server.on(direcciones[i], HTTP_GET, [](AsyncWebServerRequest *request)
+              {
       int artista = helper.getCount();
       //Añadir otro parametro por cada valor a recoger (yaw, pitch ...)
       if (request->hasParam("yaw")) {
@@ -54,45 +56,45 @@ void setup() {
         //Valor de error
         Serial.println("Error");
       }
-      request->send_P(200, "text/plain", "Bien");
-    });
+      request->send_P(200, "text/plain", "Bien"); });
   }
 
   // Start server
   server.begin();
-  
-
-
 }
 
-void loop() {
-  //Animaciones
-  //accessPoint.printArtista(0);
-  //light.simpleColor(160);
-  //Serial.println(counter);
- 
-  //light.rainbow(counter);
-  //counter ++;
+void loop()
+{
+  // Animaciones
+  // accessPoint.printArtista(0);
+  // light.simpleColor(160);
+  // Serial.println(counter);
 
-  counter = light.modulo(artistas[0], artistas[1], artistas[2]);
-  float percentage = mapF(counter, 0, 2, 0, 100);
-  //Serial.println();
-  //light.movible(percentage, 100);
-    
-  //Serial.println(percentage);
-  //light.simpleColor(counter);
-  light.intensity(100, percentage);
-  //light.ChangePaletteGyro(artistas);
+  light.rainbow(counter);
+  counter++;
 
-    //printArtista();
-  //accessPoint.setArtista(counter, 0, 0);
-  //Serial.println(accessPoint.getArtista(0, 0));
-  //light.simpleChangePaletteGyro(accessPoint.getArtista(0)[0]);
-  //Serial.println(counter);
+  // counter = light.modulo(artistas[0], artistas[1], artistas[2]);
+  // float percentage = mapF(counter, 0, 2, 0, 100);
+  // light.intensity(100, percentage);
+
+  // Serial.println();
+  // light.movible(percentage, 100);
+
+  // Serial.println(percentage);
+  // light.simpleColor(counter);
+
+  // light.ChangePaletteGyro(artistas);
+
+  // printArtista();
+  // accessPoint.setArtista(counter, 0, 0);
+  // Serial.println(accessPoint.getArtista(0, 0));
+  // light.simpleChangePaletteGyro(accessPoint.getArtista(0)[0]);
+  // Serial.println(counter);
   delay(5);
 }
 
-void print_roll_pitch_yaw(float yaw, float pitch, float roll) {
+void print_roll_pitch_yaw(float yaw, float pitch, float roll)
+{
   Serial.print(yaw, 2);
   Serial.print(",");
   Serial.print(pitch, 2);
@@ -100,17 +102,16 @@ void print_roll_pitch_yaw(float yaw, float pitch, float roll) {
   Serial.println(roll, 2);
 }
 
-void printArtista(){
-  Serial.print("Artista: ");
+void printArtista()
+{
+  Serial.print("Artista: ")
   Serial.print(0);
-  for(int j = 0; j < 3; j++){
-      Serial.print("    ");
-      Serial.print(artistas[j]);
-    }
-    Serial.println();
+  for (int j = 0; j < 3; j++)
+  {
+    Serial.print("    ");
+    Serial.print(artistas[j]);
+  }
+  Serial.println();
 }
 
-float mapF(float value, float start1, float stop1, float start2, float stop2){
-  float outgoing = start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1)); 
- return outgoing;
-}
+
