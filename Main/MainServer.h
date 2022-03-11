@@ -13,12 +13,12 @@ private:
   const char *password = "123456789";
   const String severName1 = "http://192.168.4.1/counter";
   String serverName = "";
-  float artistas[5][3] = {
-      {0.0, 0.0, 0.0},
-      {0.0, 0.0, 0.0},
-      {0.0, 4.0, 0.0},
-      {0.0, 0.0, 0.0},
-      {0.0, 0.0, 0.0},
+  float artistas[5][4] = {
+      {0.0, 0.0, 0.0, 0.0},
+      {0.0, 0.0, 0.0, 0.0},
+      {0.0, 0.0, 0.0, 0.0},
+      {0.0, 0.0, 0.0, 0.0},
+      {0.0, 0.0, 0.0, 0.0}
   };
 
   int pin;
@@ -42,14 +42,9 @@ public:
     Serial.println(IP);
   }
 
-  void setArtista(float value, int artista, int angle)
+  float getArtista(int artista, int var)
   {
-    artistas[artista][angle] = value;
-  }
-
-  float getArtista(int artista, int angle)
-  {
-    return artistas[artista][angle];
+    return artistas[artista][var];
   }
 
   void printArtista(int artista)

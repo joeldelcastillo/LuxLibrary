@@ -20,6 +20,11 @@ public:
   {
     return count;
   }
+
+    int getCount(int num)
+  {
+    return num;
+  }
 };
 
 #endif

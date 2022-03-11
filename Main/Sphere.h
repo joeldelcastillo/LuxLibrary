@@ -12,8 +12,15 @@ class Sphere
 private:
   int NUM_PER_STRIP[19] = {300, 300, 300, 300, 300,
                            300, 300, 300, 300, 300,
-                           300, 300, 300, 300, 300,
+                           17, 17, 17, 17, 300,
                            300, 300, 300, 300};
+
+  /*
+    int NUM_PER_STRIP[19] = {300, 300, 300, 300, 300,
+                             300, 300, 300, 300, 300,
+                             300, 300, 300, 300, 300,
+                             300, 300, 300, 300}; */
+
   int Total_LEDS;
   int NUM_STRIPS = 19;
   int BRIGHTNESS = 50;
@@ -126,33 +133,43 @@ public:
     FastLED.show();
   }
 
-  void fadeOne(int strip, float center, int color)
+  void fadeOne(int strip, int center, int color)
   {
-
-    int len = matrix[strip];
-    center = center % len;
+    int len = NUM_PER_STRIP[strip];
+    float newCenter = (center % len);
     for (int j = 0; j < len; j++)
     {
       float distance;
 
-      if ((center - j) > len * 0.5)
+      if ((newCenter - j) > len * 0.5)
       {
-        distance = abs(center - (j + len));
+        distance = abs(newCenter - (j + len));
       }
-      else if ((center - j) < -(len * 0.5))
+      else if ((newCenter - j) < -(len * 0.5))
       {
-        distance = abs(center - j + len);
+        distance = abs(newCenter - j + len);
       }
       else
       {
-        distance = abs(center - j);
+        distance = abs(newCenter - j);
       }
 
       float grad = 1 - (distance / len) * 4;
-      float atenuacion = mapF(grad, 0, 1, 0, 255);
+      int atenuacion = mapF(grad, 0, 1, 0, 255);
       // console.log(col);
-      bugs[strip][j] = CHSV(color, 255, atenuacion);
+      leds[strip][j] = CHSV(color, 255, atenuacion);
     }
+  }
+
+  void fadeAll(float center, int color)
+  {
+    FastLED.clear();
+    // int offset = increment % 255;
+    for (int i = 0; i < NUM_STRIPS; i++)
+    {
+      fadeOne(i, center, color);
+    }
+    FastLED.show();
   }
 
   void porcentaje(float percentage, int color)
@@ -166,6 +183,23 @@ public:
         if (j < percentage * 10)
         {
           leds[i][j] = CHSV(color, 255, 255);
+        }
+      }
+    }
+    FastLED.show();
+  }
+
+  void halfLeds(int counter, int color)
+  {
+    FastLED.clear();
+    for (int i = 0; i < NUM_STRIPS; i++)
+    {
+      for (int j = 0; j < NUM_PER_STRIP[i]; j++)
+      {
+        if (j < NUM_PER_STRIP[i] / 2)
+        {
+          int xoff = (j + counter) % NUM_PER_STRIP[i];
+          leds[i][xoff] = CHSV(color, 255, 255);
         }
       }
     }
