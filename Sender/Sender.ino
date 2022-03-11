@@ -86,3 +86,6 @@ String httpPOSTRequest(String serverName, float value1, float value2, float valu
   Serial.println(serverPath);
   return serverPath;
 }
+float accModule(float x, float y, float z) {
+  return sqrt((x * x) + (y * y) + (z * z));
+}
