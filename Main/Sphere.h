@@ -12,7 +12,7 @@ class Sphere
 private:
   int NUM_PER_STRIP[19] = {300, 300, 300, 300, 300,
                            300, 300, 300, 300, 300,
-                           17, 17, 17, 17, 300,
+                           300, 300, 300, 300, 300,
                            300, 300, 300, 300};
 
   /*
@@ -178,9 +178,9 @@ public:
     FastLED.clear();
     for (int i = 0; i < NUM_STRIPS; i++)
     {
-      for (int j = 0; j < 10; j++)
+      for (int j = 0; j < NUM_PER_STRIP[i]; j++)
       {
-        if (j < percentage * 10)
+        if (j < percentage)
         {
           leds[i][j] = CHSV(color, 255, 255);
         }

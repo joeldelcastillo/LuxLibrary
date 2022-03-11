@@ -103,13 +103,16 @@ void loop()
       light.halfLeds(counter, 50);
       break; // optional
     case 1:
-      light.movible(artista1[3] * 100, 100);
+      light.porcentaje(counter%300, 100);
       break; // optional
     case 2:
-      light.simpleColor(artista1[3] * 250);
+      light.simpleColor(counter);
       break; // optional
     case 3:
-      light.intensity(50, round(artista1[3] * 100));
+      light.intensity(50, round(counter));
+      break; // optional
+    case 4:
+      light.rainbow(counter);
       break; // optional
   }
 }
