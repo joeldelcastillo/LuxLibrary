@@ -72,13 +72,6 @@ void setup()
             break; // optional
         }
         request->send_P(200, "text/plain", "Bien");
-
-        // printVars(id, yaw, pitch, roll, acc);
-        // guardar los datos en la clase MainServer
-        // accessPoint.setArtista(yaw, artista, 0);
-        // accessPoint.setArtista(pitch, artista, 1);
-        // accessPoint.setArtista(roll, artista, 2);
-        // Serial.println();
       }
       else if (request->hasParam("anim"))
       {
@@ -100,20 +93,23 @@ void loop()
   switch (anim)
   {
     case 0:
-      light.halfLeds(counter, 50);
-      break; // optional
+      light.danceFalf(counter, 10, 180);
+      break;
     case 1:
       light.porcentaje(counter%300, 100);
-      break; // optional
+      break;
     case 2:
       light.simpleColor(counter);
-      break; // optional
+      break;
     case 3:
       light.intensity(50, round(counter));
-      break; // optional
+      break;
     case 4:
       light.rainbow(counter);
-      break; // optional
+      break;
+    case 5:
+      light.partitionAll(counter, 10, 70);
+      break;
   }
 }
 

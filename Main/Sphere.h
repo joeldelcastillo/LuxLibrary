@@ -15,11 +15,10 @@ private:
                            300, 300, 300, 300, 300,
                            300, 300, 300, 300};
 
-  /*
-    int NUM_PER_STRIP[19] = {300, 300, 300, 300, 300,
-                             300, 300, 300, 300, 300,
-                             300, 300, 300, 300, 300,
-                             300, 300, 300, 300}; */
+//    int NUM_PER_STRIP[19] = {15, 15, 15, 15, 15,
+//                             15, 15, 15, 15, 15,
+//                             15, 15, 15, 15, 15,
+//                             15, 15, 15, 15}; 
 
   int Total_LEDS;
   int NUM_STRIPS = 19;
@@ -189,21 +188,26 @@ public:
     FastLED.show();
   }
 
-  void halfLeds(int counter, int color)
+  void danceFalf(int counter, int ratio, int color)
   {
     FastLED.clear();
     for (int i = 0; i < NUM_STRIPS; i++)
     {
-      for (int j = 0; j < NUM_PER_STRIP[i]; j++)
-      {
-        if (j < NUM_PER_STRIP[i] / 2)
-        {
-          int xoff = (j + counter) % NUM_PER_STRIP[i];
-          leds[i][xoff] = CHSV(color, 255, 255);
-        }
-      }
+      halfLeds(i, counter + i*ratio, 200);
     }
     FastLED.show();
+  }
+
+  void halfLeds(int strip, int counter, int color)
+  {
+    for (int j = 0; j < NUM_PER_STRIP[strip]; j++)
+    {
+      if (j < NUM_PER_STRIP[strip] / 2)
+      {
+        int xoff = (j + counter) % NUM_PER_STRIP[strip];
+        leds[strip][xoff] = CHSV(color, 255, 255);
+      }
+    }
   }
 
   void movible(float percentage, int color)
@@ -222,6 +226,30 @@ public:
     }
     FastLED.show();
   }
+
+  void partitionOne(int strip, int parts, int intensity, int color){
+    int l = NUM_PER_STRIP[strip];
+    int ratio = round(l/parts);
+    for (int j = 0; j < NUM_PER_STRIP[strip]; j++) {
+      if(j%ratio == 0){
+        leds[strip][j] = CHSV(color, 255, 255* (intensity/100));
+      }
+    }
+  }
+
+void partitionAll(int count, int parts, int color){
+  
+  for (int i = 0; i < NUM_STRIPS; i++){
+    for (int j = 0; j < NUM_PER_STRIP[i]; j++){
+      int yoff = (i + count) % NUM_STRIPS;
+      if (i < NUM_STRIPS / 2) {
+        partitionOne(yoff, 5, 1, color);
+      } else {
+        partitionOne(yoff, 5, 0.4, color);
+      }
+    }
+  }
+}
 
   float modulo(float x, float y, float z)
   {
