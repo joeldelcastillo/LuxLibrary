@@ -93,23 +93,23 @@ void loop()
   switch (anim)
   {
     case 0:
-      light.danceFalf(counter, 10, 180);
-      break;
+      light.rainbow(counter);
+      break; // optional
     case 1:
-      light.porcentaje(counter%300, 100);
-      break;
+      light.danceFalf(counter, 10, 180);
+      break; // optional
     case 2:
       light.simpleColor(counter);
-      break;
+      break; // optional
     case 3:
       light.intensity(50, round(counter));
-      break;
+      break; // optional
     case 4:
-      light.rainbow(counter);
-      break;
+      light.percentageAll(counter, 70);
+      break; // optional
     case 5:
-      light.partitionAll(counter, 10, 70);
-      break;
+      light.partitionAll(counter, 4, 100);
+      break; // optional
   }
 }
 
