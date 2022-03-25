@@ -9,7 +9,10 @@ MainServer accessPoint("accessPoint");
 int counter = 0;
 int accVar = 0;
 int anim = 0;
+int numAnim = 6;
 float maxBailarin = 0;
+unsigned long previousMillis = 0;
+const long interval = 15000;
 
 AsyncWebServer server(80);
 float artista0[4] = {0.0, 0.0, 100, 0.0};
@@ -31,8 +34,8 @@ void setup()
   for (int i = 0; i < 2; i++)
   {
     // Colocar un listener por cada dirección de cada baliarin (cliente)
-    server.on(direcciones[i], HTTP_GET, [](AsyncWebServerRequest * request)
-    {
+    server.on(direcciones[i], HTTP_GET, [](AsyncWebServerRequest *request)
+              {
       // Añadir otro parametro por cada valor a recoger (yaw, pitch ...)
       if (request->hasParam("yaw"))
       {
@@ -79,8 +82,7 @@ void setup()
         String animS = request->getParam("anim")->value();
         anim = animS.toInt();
         request->send_P(200, "text/plain", "Bien Animado");
-      }
-    });
+      } });
   }
   // Start server
   server.begin();
@@ -89,62 +91,38 @@ void setup()
 void loop()
 {
 
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= interval)
+  {
+    anim = (anim + 1) % numAnim;
+    previousMillis = currentMillis;
+  }
+
   counter++;
   switch (anim)
   {
-    case 0:
-      light.rainbow(counter);
-      break; // optional
-    case 1:
-      light.danceFalf(counter, 10, 180);
-      break; // optional
-    case 2:
-      light.simpleColor(counter);
-      break; // optional
-    case 3:
-      light.intensity(50, round(counter));
-      break; // optional
-    case 4:
-      light.percentageAll(counter, 70);
-      break; // optional
-    case 5:
-      light.partitionAll(counter, 4, 100);
-      break; // optional
+  case 0:
+    light.percentageAll(counter,70);
+    break; // optional
+  case 1:
+    light.rainbow(counter);
+    break; // optional
+  case 2:
+    light.simpleColor(counter);
+    break; // optional
+  case 3:
+    light.intensity(50, round(counter));
+    break; // optional
+  case 4:
+    light.danceFalf(counter, 10, 180);
+    // light.percentageAll(counter, 70);
+    break; // optional
+  case 5:
+    light.partitionAll(counter, 4, 100);
+    break; // optional
   }
 }
-
-// printArtista1();
-//  Animaciones
-//  accessPoint.printArtista(0);
-//  light.simpleColor(160);
-//  Serial.println(counter);
-
-// light.rainbow(counter);
-//   counter++;
-
-// accVar += artista1[2]/150;
-// light.intensity(50, round (artista0[3] * 100));
-// light.halfLeds(round(accVar), 50);
-// light.halfLeds(counter, 50);
-// counter++;
-
-// counter = light.modulo(artistas[0], artistas[1], artistas[2]);
-// float percentage = mapF(counter, 0, 2, 0, 100);
-// light.intensity(100, percentage);
-
-// Serial.println();
-// light.movible(percentage, 100);
-
-// Serial.println(percentage);
-// light.simpleColor(counter);
-
-// light.ChangePaletteGyro(artistas);
-
-// printArtista();
-// accessPoint.setArtista(counter, 0, 0);
-// Serial.println(accessPoint.getArtista(0, 0));
-// light.simpleChangePaletteGyro(accessPoint.getArtista(0)[0]);
-// Serial.println(counter);
 
 void printVars(int artista, float yaw, float pitch, float roll, float acc)
 {

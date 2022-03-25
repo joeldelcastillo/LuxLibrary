@@ -14,11 +14,11 @@ private:
                            300, 300, 300, 300, 300,
                            300, 300, 300, 300, 300,
                            300, 300, 300, 300};
-//
-//    int NUM_PER_STRIP[19] = {15, 15, 15, 15, 15,
-//                             15, 15, 15, 15, 15,
-//                             15, 15, 15, 15, 15,
-//                             15, 15, 15, 15}; 
+  //
+  //    int NUM_PER_STRIP[19] = {15, 15, 15, 15, 15,
+  //                             15, 15, 15, 15, 15,
+  //                             15, 15, 15, 15, 15,
+  //                             15, 15, 15, 15};
 
   int Total_LEDS;
   int NUM_STRIPS = 19;
@@ -132,32 +132,37 @@ public:
     FastLED.show();
   }
 
-  void partitionOne(int strip, int parts, int intensity, int color){
+  void partitionOne(int strip, int parts, int intensity, int color)
+  {
     int l = NUM_PER_STRIP[strip];
-    int ratio = round(l/parts);
-      for (int j = 0; j < l; j++) {
-        if(j%ratio == 0){
-          leds[strip][j] =  CHSV(color, 255, 255* intensity);
-        }
+    int ratio = round(l / parts);
+    for (int j = 0; j < l; j++)
+    {
+      if (j % ratio == 0)
+      {
+        leds[strip][j] = CHSV(color, 255, 255 * intensity);
       }
+    }
   }
 
-  void partitionAll(int count, int parts, int color){
+  void partitionAll(int count, int parts, int color)
+  {
     FastLED.clear();
     for (int i = 0; i < NUM_STRIPS; i++)
+    {
+      int yoff = (i + count) % NUM_STRIPS;
+      if (i < NUM_STRIPS / 2)
       {
-        int yoff = (i + count) % NUM_STRIPS;
-        if (i < NUM_STRIPS / 2)
-        {
-          partitionOne(yoff, 5, 1, 100);
-        } else {
-          partitionOne(yoff, 5, 0.4, 100);
-        }
+        partitionOne(yoff, 5, 1, 100);
       }
-      
+      else
+      {
+        partitionOne(yoff, 5, 0.4, 100);
+      }
+    }
+
     FastLED.show();
   }
-
 
   void fadeOne(int strip, int center, int color)
   {
@@ -203,7 +208,7 @@ public:
     FastLED.clear();
     for (int i = 0; i < NUM_STRIPS; i++)
     {
-      halfLeds(i, counter + i*ratio, 200);
+      halfLeds(i, counter + i * ratio, 200);
     }
     FastLED.show();
   }
@@ -220,16 +225,47 @@ public:
     }
   }
 
-  void percentageOne(int strip, int p, int color)
+  void percentageOne(int strip, float percentage, int color)
   {
-    int percentage = p % 100;
+//    float percentage = p % 100;
     for (int j = 0; j < NUM_PER_STRIP[strip]; j++)
     {
-      if ( j < floor((percentage / 100)* NUM_PER_STRIP[strip]))
+      if (j < (percentage/100) * NUM_PER_STRIP[strip])
       {
         leds[strip][j] = CHSV(color, 255, 255);
-      } 
+      }
     }
+  }
+
+  int porcentaje(float percentage, int color)
+  {
+//    percentage = percentage%100;
+    FastLED.clear();
+    for (int i = 0; i < NUM_STRIPS; i++)
+    {
+      for (int j = 0; j < 10; j++)
+      {
+        if (j < (percentage/100) * 10)
+        {
+          leds[i][j] = CHSV(color, 255, 255);
+        }
+      }
+    }
+    FastLED.show();
+  }
+
+  void progressivePercentage(int counter, int color)
+  {
+    FastLED.clear();
+
+    for (int i = 0; i < NUM_STRIPS; i++)
+    {
+      int progress = floor(counter/(NUM_STRIPS*NUM_PER_STRIP[i]));
+      if(i < progress){
+        percentageOne(i, counter, color);
+      }
+    }
+    FastLED.show();
   }
 
   void percentageAll(int counter, int color)
