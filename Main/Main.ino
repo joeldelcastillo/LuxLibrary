@@ -12,7 +12,7 @@ int anim = 0;
 int numAnim = 6;
 float maxBailarin = 0;
 unsigned long previousMillis = 0;
-const long interval = 15000;
+const long interval = 300000;
 
 AsyncWebServer server(80);
 float artista0[4] = {0.0, 0.0, 100, 0.0};
@@ -103,7 +103,7 @@ void loop()
   switch (anim)
   {
   case 0:
-    light.percentageAll(counter,70);
+    light.waveIntensity(counter, 220);
     break; // optional
   case 1:
     light.rainbow(counter);
@@ -112,16 +112,21 @@ void loop()
     light.simpleColor(counter);
     break; // optional
   case 3:
-    light.intensity(50, round(counter));
+    light.danceFalf(counter*20, 0, 180);
+//    light.percentageAll(counter%100,50);
     break; // optional
   case 4:
-    light.danceFalf(counter, 10, 180);
+    light.danceFalf(counter, 10, 50);
     // light.percentageAll(counter, 70);
     break; // optional
   case 5:
-    light.partitionAll(counter, 4, 100);
+    light.partitionAll(counter, 20, 100);
+    break; // optional
+  default:
+    light.percentageAll(counter%100,50);
     break; // optional
   }
+
 }
 
 void printVars(int artista, float yaw, float pitch, float roll, float acc)

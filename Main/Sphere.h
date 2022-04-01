@@ -5,6 +5,7 @@
 #include <FastLED.h>
 
 #define LED_TYPE WS2812B
+#define PII 3.1415926535897932384626433832795
 
 class Sphere
 {
@@ -56,37 +57,31 @@ public:
   void setPins()
   {
 
-    // currentPalette = RainbowColors_p;
-    // currentBlending = LINEARBLEND;
 
-    FastLED.addLeds<WS2812B, 2, GRB>(leds[0], NUM_PER_STRIP[0]);
-    FastLED.addLeds<WS2812B, 4, GRB>(leds[1], NUM_PER_STRIP[1]);
-    FastLED.addLeds<WS2812B, 5, GRB>(leds[2], NUM_PER_STRIP[2]);
-    FastLED.addLeds<WS2812B, 18, GRB>(leds[3], NUM_PER_STRIP[3]);
-    FastLED.addLeds<WS2812B, 19, GRB>(leds[4], NUM_PER_STRIP[4]);
-    FastLED.addLeds<WS2812B, 21, GRB>(leds[5], NUM_PER_STRIP[5]);
-    FastLED.addLeds<WS2812B, 22, GRB>(leds[6], NUM_PER_STRIP[6]);
-    FastLED.addLeds<WS2812B, 23, GRB>(leds[7], NUM_PER_STRIP[7]).setCorrection(TypicalLEDStrip);
-    ;
+    FastLED.addLeds<WS2812B, 15, GRB>(leds[0], NUM_PER_STRIP[0]);
+    FastLED.addLeds<WS2812B, 2, GRB>(leds[1], NUM_PER_STRIP[1]);
+    FastLED.addLeds<WS2812B, 4, GRB>(leds[2], NUM_PER_STRIP[2]);
+    FastLED.addLeds<WS2812B, 16, GRB>(leds[3], NUM_PER_STRIP[3]);
+    
+    FastLED.addLeds<WS2812B, 17, GRB>(leds[4], NUM_PER_STRIP[4]);
+    FastLED.addLeds<WS2812B, 5, GRB>(leds[5], NUM_PER_STRIP[5]);
+    FastLED.addLeds<WS2812B, 18, GRB>(leds[6], NUM_PER_STRIP[6]);
+    FastLED.addLeds<WS2812B, 19, GRB>(leds[7], NUM_PER_STRIP[7]).setCorrection(TypicalLEDStrip);
 
-    FastLED.addLeds<WS2812B, 12, GRB>(leds[8], NUM_PER_STRIP[8]);
-    FastLED.addLeds<WS2812B, 13, GRB>(leds[9], NUM_PER_STRIP[9]);
-    FastLED.addLeds<WS2812B, 14, GRB>(leds[10], NUM_PER_STRIP[10]);
-    FastLED.addLeds<WS2812B, 27, GRB>(leds[11], NUM_PER_STRIP[11]);
+    FastLED.addLeds<WS2812B, 21, GRB>(leds[8], NUM_PER_STRIP[8]);
+    FastLED.addLeds<WS2812B, 22, GRB>(leds[9], NUM_PER_STRIP[9]);
+    FastLED.addLeds<WS2812B, 23, GRB>(leds[10], NUM_PER_STRIP[10]);
+    FastLED.addLeds<WS2812B, 32, GRB>(leds[11], NUM_PER_STRIP[11]);
 
-    FastLED.addLeds<WS2812B, 12, GRB>(leds[8], NUM_PER_STRIP[8]);
-    FastLED.addLeds<WS2812B, 13, GRB>(leds[9], NUM_PER_STRIP[9]);
-    FastLED.addLeds<WS2812B, 14, GRB>(leds[10], NUM_PER_STRIP[10]);
-    FastLED.addLeds<WS2812B, 27, GRB>(leds[11], NUM_PER_STRIP[11]);
-
-    FastLED.addLeds<WS2812B, 26, GRB>(leds[12], NUM_PER_STRIP[12]);
-    FastLED.addLeds<WS2812B, 25, GRB>(leds[13], NUM_PER_STRIP[13]);
-    FastLED.addLeds<WS2812B, 32, GRB>(leds[14], NUM_PER_STRIP[14]);
+    FastLED.addLeds<WS2812B, 27, GRB>(leds[12], NUM_PER_STRIP[12]);
+    FastLED.addLeds<WS2812B, 26, GRB>(leds[13], NUM_PER_STRIP[13]);
+    FastLED.addLeds<WS2812B, 25, GRB>(leds[14], NUM_PER_STRIP[14]);
     FastLED.addLeds<WS2812B, 33, GRB>(leds[15], NUM_PER_STRIP[15]);
 
-    FastLED.addLeds<WS2812B, 16, GRB>(leds[16], NUM_PER_STRIP[16]);
-    FastLED.addLeds<WS2812B, 17, GRB>(leds[17], NUM_PER_STRIP[17]);
-    FastLED.addLeds<WS2812B, 1, GRB>(leds[18], NUM_PER_STRIP[18]);
+    FastLED.addLeds<WS2812B, 13, GRB>(leds[16], NUM_PER_STRIP[16]);
+    FastLED.addLeds<WS2812B, 12, GRB>(leds[17], NUM_PER_STRIP[17]);
+    FastLED.addLeds<WS2812B, 14, GRB>(leds[18], NUM_PER_STRIP[18]);
+//    FastLED.addLeds<WS2812B, 1, GRB>(leds[18], NUM_PER_STRIP[18]);
 
     FastLED.setBrightness(BRIGHTNESS);
   }
@@ -103,6 +98,37 @@ public:
     }
     FastLED.show();
   }
+
+  void colorOne(int strip, int color, int intensity)
+  {
+    for (int j = 0; j < NUM_PER_STRIP[strip]; j++) {
+      leds[strip][j] = CHSV(color, 255, floor(255 * intensity/100));
+    }
+  }
+
+
+
+void waveIntensity (int counter, int color){
+ FastLED.clear();
+  for (int i = 0; i < NUM_STRIPS; i++)
+    {
+      float k = mapF (i, 0, NUM_STRIPS, 0, 2* PI  );
+      colorOne(i, color,  floor (mapF(sin( k + 0.01 * counter), -1, 1, 0, 100)));
+    }
+  FastLED.show();
+}
+
+
+//void waveIntensity (int counter, int color){
+// FastLED.clear();
+//  for (int i = 0; i < NUM_STRIPS; i++)
+//    {
+//      float k = mapF (i, 0, NUM_STRIPS, 0, 2* PI  );
+//      colorOne(i, color,  floor (mapF(sin(k + counter), 0, 1, 0, 100))/100);
+//    }
+//  FastLED.show();
+//}
+
 
   void intensity(int hue, int intensity)
   {
@@ -140,7 +166,9 @@ public:
     {
       if (j % ratio == 0)
       {
-        leds[strip][j] = CHSV(color, 255, 255 * intensity);
+        for (int k = 0; k < 1; k++){
+            leds[strip][j + k] = CHSV(color, 255, 255 * intensity);  
+        }
       }
     }
   }
